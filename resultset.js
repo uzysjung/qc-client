@@ -17,7 +17,7 @@ ResultSet = module.exports = function(client, operationHandle, schema) {
     this.closed = false;
 
     for (var c in schema.columns) {
-        this.columnNameIndex[schema.columns[c].columnName.toUpperCase()] = schema.columns[c].position;
+        this.columnNameIndex[schema.columns[c].columnName.toUpperCase()] = schema.columns[c].position-1;
         this.columns[schema.columns[c].position-1] = {
             columnName: schema.columns[c].columnName,
             // querycache server doesn't support for types other than primitive types, currently.
@@ -91,7 +91,7 @@ ResultSet.prototype.getObject = function(index) {
     if (typeof(index) == "string") {
         var upper = index.toUpperCase();
         if ( upper in this.columnNameIndex )
-            zIndex = this.columnNameIndex[upper] - 1;
+            zIndex = this.columnNameIndex[upper];
         else
             throw new RangeError("column name " + index + " is invalid");
     } else {
@@ -155,6 +155,30 @@ ResultSet.prototype.getObject = function(index) {
         this.lastColumnWasNull = true;
     }
     return value;
+};
+
+ResultSet.prototype.getRowDict = function() {
+    if (this.currentRow == null) {
+        throw new ReferenceError("Referencing column before calling next()");
+    }
+
+    var row = {};
+    for (var i = 0; i<this.columnCount; i++) {
+        row[this.columns[i].columnName] = this.getObject(i+1);
+    }
+    return row;
+};
+
+ResultSet.prototype.getRowArray = function() {
+    if (this.currentRow == null) {
+        throw new ReferenceError("Referencing column before calling next()");
+    }
+
+    var row = [];
+    for (var i = 0; i<this.columnCount; i++) {
+        row.push(this.getObject(i+1));
+    }
+    return row;
 };
 
 ResultSet.prototype.wasNull = function() {

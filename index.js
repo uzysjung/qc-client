@@ -4,6 +4,7 @@ var net = require('net');
 var ttypes = require('./thrift/CliService_types');
 var TCLIService = require('./thrift/TCLIService');
 var Statement = require('./statement');
+var url = require('url');
 
 qcClient = module.exports = function() {
     this.connection = null;
@@ -14,7 +15,40 @@ qcClient = module.exports = function() {
 };
 
 qcClient.prototype = {};
-qcClient.prototype.open = function*(backendType, host, port, username, password) {
+
+qcClient.prototype.parseURL = function(url) {
+    var components = {};
+    var tokens = url.split("://");
+    components['protocol'] = tokens[0];
+    var startOfPath = tokens[1].indexOf('/');
+    var hostAndPort = null;
+    var pathAndQuery = null;
+    if (startOfPath >= 0) {
+        hostAndPort = tokens[1].substring(0, startOfPath);
+        pathAndQuery = tokens[1].substring(startOfPath);
+    }
+    else {
+        hostAndPort = tokens[1];
+    }
+
+    tokens = hostAndPort.split(':');
+    components['host'] = tokens[0];
+    if (tokens[1]) {
+        components['port'] = Number(tokens[1]);
+    }
+    if (pathAndQuery != null) {
+        tokens = pathAndQuery.split('?');
+        components['path'] = tokens[0];
+        components['query'] = tokens[1];
+    }
+    return components;
+};
+
+qcClient.prototype.open = function*(jdbcUrl, username, password) {
+    var urlComponents = this.parseURL(jdbcUrl);
+    if (!urlComponents.port)
+        urlComponents.port = 8655;
+
     var hostInfo = new ttypes.THostInfo({
         hostname: os.hostname(),
         ipaddr: null,
@@ -22,7 +56,7 @@ qcClient.prototype.open = function*(backendType, host, port, username, password)
     });
     var req = new ttypes.TOpenSessionReq({
         clientProtocol: 0,
-        url: 'jdbc:' + backendType,
+        url: urlComponents.protocol,
         username: username,
         password: password,
         hostInfo: hostInfo,
@@ -34,7 +68,7 @@ qcClient.prototype.open = function*(backendType, host, port, username, password)
             resolve(connection);
         };
 
-        var connection = thrift.createConnection("localhost", 8655, {
+        var connection = thrift.createConnection(urlComponents.host, urlComponents.port, {
             transport : thrift.TBufferedTransport,
             protocol : thrift.TCompactProtocol
         });

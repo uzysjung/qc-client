@@ -8,14 +8,14 @@ var resultSet = null;
 co( function *() {
     try {
         var startTime = new Date();
-        //var connected = yield qc.open("eda-hive", "localhost", 8655, "your-acount", "your-password");
-        var connected = yield qc.open("local-oracle", "localhost", 8655, "your-account", "your-password");
+        var connected = yield qc.open("jdbc:eda-hive://your-host:8655", "login_name", "password");
+        //var connected = yield qc.open("jdbc:local-oracle://your-host:8655", "login_name", "password");
         if (!connected) {
             throw new Error("not connected");
         }
         stmt = qc.createStatement();
-        //var sql = "select * from admin.log_querycache_audit where part_hour = '2015110512' limit 200";
-        var sql = "select table_name from tabs";
+        var sql = "select * from your_table where id > 0 limit 10";
+        //var sql = "select table_name from tabs";
         var hasResultSet = yield stmt.execute(sql);
         if (!hasResultSet) {
             console.log("query affected " + stmt.updateRowCount + " rows.");
@@ -40,6 +40,11 @@ co( function *() {
                     var col = resultSet.getObject(i);
                     console.log( "column " + i + " : " + col);
                 }
+
+                console.log("-- row in dictionary --");
+                console.log( resultSet.getRowDict() );
+                console.log("-- row in array --");
+                console.log( resultSet.getRowArray() );
             }
             else {
                 console.log("resultSet.next returned false");
