@@ -41,7 +41,7 @@ ResultSet.prototype.getRowsFromServer = function*() {
 
     var resp = yield this.client.FetchResults(req);
     this.hasMoreRows = resp.hasMoreRows;
-    if (resp.results.rows.length > 0) {
+    if (resp.results && resp.results.rows && resp.results.rows.length > 0) {
         return resp.results.rows;
     }
     return null;
