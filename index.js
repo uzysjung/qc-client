@@ -87,7 +87,7 @@ qcClient.prototype.open = function*(jdbcUrl, username, password) {
     this.serverInfo = resp.hostInfo;
     this.sessionHandle = resp.sessionHandle;
 
-    console.log("connected to querycache at " + this.serverInfo.hostname + ":" + this.serverInfo.portnum);
+    //console.log("connected to querycache at " + this.serverInfo.hostname + ":" + this.serverInfo.portnum);
     return true;
 };
 
