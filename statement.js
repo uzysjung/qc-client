@@ -61,6 +61,25 @@ Statement.prototype.getResultSet = function*() {
     return this.resultSet;
 };
 
+Statement.prototype.setCommit = function*() {
+
+    var req = new ttypes.TCommitReq({
+        sessionHandle: this.sessionHandle
+    });
+    var resp = yield this.client.Commit(req);
+    resp.updateRowCount = this.updateRowCount;
+
+    this.sessionHandle = null;
+    this.client = null;
+    this.hasResultSet = false;
+    this.updateRowCount = -1;
+    //console.log('commit res:',resp);
+
+    return resp;
+
+};
+
+
 Statement.prototype.close = function*() {
     this.sessionHandle = null;
     this.hasResultSet = false;
