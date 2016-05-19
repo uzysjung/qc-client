@@ -12,6 +12,8 @@ qcClient = module.exports = function() {
     this.serverInfo = null;
     this.sessionHandle = null;
     this.promisedClient = null;
+    this.connectionError = null;
+    //this.timeOutOccured = null;
 };
 
 qcClient.prototype = {};
@@ -45,6 +47,7 @@ qcClient.prototype.parseURL = function(url) {
 };
 
 qcClient.prototype.open = function*(jdbcUrl, username, password) {
+    var self = this;
     var urlComponents = this.parseURL(jdbcUrl);
     if (!urlComponents.port)
         urlComponents.port = 8655;
@@ -72,14 +75,37 @@ qcClient.prototype.open = function*(jdbcUrl, username, password) {
             transport : thrift.TBufferedTransport,
             protocol : thrift.TCompactProtocol
         });
-        connection.on('error', function(err) {
-            callback(err);
-        });
-        connection.on('connect', function() {
-            callback(null, connection);
-        });
+        var cbErr = function(err) {
+            //console.log('cbErr',err);
+            connection.removeListener('connect',cbConnect);
+            connection.removeListener('error',cbErr);
+            reject(err);
+        }
+        var cbConnect = function() {
+            //console.log('connect ok');
+            connection.removeListener('connect',cbConnect);
+            connection.removeListener('error',cbErr);
+
+            resolve(connection);
+        }
+
+        connection.on('error', cbErr);
+        connection.on('connect',cbConnect);
     });
     this.connection = yield getConnection;
+
+    this.connection.on('error',function(err){
+        self.connectionError = err;
+        console.log('qc-client connection error :',self.connectionError);
+        throw self.connectionError;
+    });
+    this.connection.on('end',function(){
+        self.connectionError = new Error(" FIN from destination");
+        console.log('qc-client connection end :',self.connectionError);
+        throw self.connectionError;
+    });
+
+
     hostInfo.ipaddr = this.connection.connection.localAddress;
     hostInfo.portnum = this.connection.connection.localPort;
     this.client = thrift.createClient(TCLIService.Client, this.connection);
@@ -99,6 +125,8 @@ qcClient.prototype.close = function*() {
         this.client = null;
         this.serverInfo = null;
         this.sessionHandle = null;
+        this.connectionError = null;
+        //this.timeOutOccured = null;
     }
 };
 
