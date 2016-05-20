@@ -96,13 +96,12 @@ qcClient.prototype.open = function*(jdbcUrl, username, password) {
 
     this.connection.on('error',function(err){
         self.connectionError = err;
-        console.log('qc-client connection error :',self.connectionError);
+        console.log('qc-client connection error :',self.connectionError.stack);
         throw self.connectionError;
     });
-    this.connection.on('end',function(){
+    this.connection.connection.on('end',function(){
         self.connectionError = new Error(" FIN from destination");
-        console.log('qc-client connection end :',self.connectionError);
-        throw self.connectionError;
+        console.log('qc-client connection end :',self.connectionError.stack);
     });
 
 
