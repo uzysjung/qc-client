@@ -55,8 +55,10 @@ Statement.prototype.getResultSet = function*() {
     var req = new ttypes.TGetResultSetMetadataReq({
         operationHandle: this.operationHandle
     });
-
-    var resp = yield this.client.GetResultSetMetadata(req);
+    var resp;
+    if(req) {
+        resp = yield this.client.GetResultSetMetadata(req);
+    }
     this.resultSet = new ResultSet(this.client, this.operationHandle, resp.schema);
     return this.resultSet;
 };
