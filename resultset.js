@@ -38,8 +38,10 @@ ResultSet.prototype.getRowsFromServer = function*() {
         orientation: ttypes.TFetchOrientation.FETCH_NEXT,
         maxRows: 1024
     });
-
-    var resp = yield this.client.FetchResults(req);
+    var resp;
+    if(req) {
+        resp = yield this.client.FetchResults(req);
+    }
     this.hasMoreRows = resp.hasMoreRows;
     if (resp.results && resp.results.rows && resp.results.rows.length > 0) {
         return resp.results.rows;
@@ -78,7 +80,9 @@ ResultSet.prototype.close = function *() {
         var req = new ttypes.TCloseOperationReq({
             operationHandle: this.operationHandle
         });
-        yield this.client.CloseOperation(req);
+        if(req) {
+            yield this.client.CloseOperation(req);
+        }
     }
 };
 

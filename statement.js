@@ -97,6 +97,8 @@ Statement.prototype.close = function*() {
         var req = ttypes.TCloseOperationReq({
             operationHandle: this.operationHandle
         });
-        yield this.client.CloseOperation(req);
+        if(req) {
+            yield this.client.CloseOperation(req);
+        }
     }
 };

@@ -108,7 +108,10 @@ qcClient.prototype.open = function*(jdbcUrl, username, password) {
     hostInfo.ipaddr = this.connection.connection.localAddress;
     hostInfo.portnum = this.connection.connection.localPort;
     this.client = thrift.createClient(TCLIService.Client, this.connection);
-    var resp = yield this.client.OpenSession(req);
+    var resp;
+    if(req) {
+        resp = yield this.client.OpenSession(req);
+    }
     this.serverInfo = resp.hostInfo;
     this.sessionHandle = resp.sessionHandle;
 
