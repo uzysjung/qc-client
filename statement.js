@@ -29,7 +29,10 @@ Statement.prototype.execute = function*(query) {
     var osResp;
     do {
         osResp = yield this.client.GetOperationStatus(osReq);
-    } while (osResp.status.statusCode == ttypes.TOperationState.RUNNING_STATE);
+    } while (
+            (osResp.operationState == TOperationState.INITIALIZED_STATE || osResp.operationState == TOperationState.RUNNING_STATE)
+            && osResp.status.statusCode == TStatusCode.SUCCESS_STATUS
+        );
 
     if (osResp.operationState == ttypes.TOperationState.FINISHED_STATE) {
         this.hasResultSet = osResp.operationHandle.hasResultSet;
