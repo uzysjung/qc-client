@@ -73,11 +73,6 @@ Statement.prototype.setCommit = function*() {
     });
     var resp = yield this.client.Commit(req);
     resp.updateRowCount = this.updateRowCount;
-
-    this.sessionHandle = null;
-    this.client = null;
-    this.hasResultSet = false;
-    this.updateRowCount = -1;
     //console.log('commit res:',resp);
 
     return resp;
@@ -99,11 +94,13 @@ Statement.prototype.close = function*() {
     }
 
     if (this.operationHandle) {
-        var req = ttypes.TCloseOperationReq({
+        var req = new ttypes.TCloseOperationReq({
             operationHandle: this.operationHandle
         });
         if(req) {
             yield this.client.CloseOperation(req);
+            this.operationHandle = null;
+            this.client = null;
         }
     }
 };
