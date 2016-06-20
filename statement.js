@@ -30,8 +30,8 @@ Statement.prototype.execute = function*(query) {
     do {
         osResp = yield this.client.GetOperationStatus(osReq);
     } while (
-            (osResp.operationState == TOperationState.INITIALIZED_STATE || osResp.operationState == TOperationState.RUNNING_STATE)
-            && osResp.status.statusCode == TStatusCode.SUCCESS_STATUS
+            (osResp.operationState == ttypes.TOperationState.INITIALIZED_STATE || osResp.operationState == ttypes.TOperationState.RUNNING_STATE)
+            && osResp.status.statusCode == ttypes.TStatusCode.SUCCESS_STATUS
         );
 
     if (osResp.operationState == ttypes.TOperationState.FINISHED_STATE) {

@@ -1851,6 +1851,114 @@ TCLIService_FetchResults_result.prototype.write = function(output) {
   return;
 };
 
+TCLIService_FetchQueryLogs_args = function(args) {
+  this.req = null;
+  if (args) {
+    if (args.req !== undefined) {
+      this.req = args.req;
+    }
+  }
+};
+TCLIService_FetchQueryLogs_args.prototype = {};
+TCLIService_FetchQueryLogs_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.req = new ttypes.TFetchQueryLogReq();
+        this.req.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_FetchQueryLogs_args.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_FetchQueryLogs_args');
+  if (this.req !== null && this.req !== undefined) {
+    output.writeFieldBegin('req', Thrift.Type.STRUCT, 1);
+    this.req.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TCLIService_FetchQueryLogs_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+  }
+};
+TCLIService_FetchQueryLogs_result.prototype = {};
+TCLIService_FetchQueryLogs_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new ttypes.TFetchQueryLogResp();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_FetchQueryLogs_result.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_FetchQueryLogs_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TCLIService_GetFunctions_args = function(args) {
   this.req = null;
   if (args) {
@@ -1949,114 +2057,6 @@ TCLIService_GetFunctions_result.prototype.read = function(input) {
 
 TCLIService_GetFunctions_result.prototype.write = function(output) {
   output.writeStructBegin('TCLIService_GetFunctions_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
-    this.success.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-TCLIService_GetLog_args = function(args) {
-  this.req = null;
-  if (args) {
-    if (args.req !== undefined) {
-      this.req = args.req;
-    }
-  }
-};
-TCLIService_GetLog_args.prototype = {};
-TCLIService_GetLog_args.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.req = new ttypes.TGetLogReq();
-        this.req.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-TCLIService_GetLog_args.prototype.write = function(output) {
-  output.writeStructBegin('TCLIService_GetLog_args');
-  if (this.req !== null && this.req !== undefined) {
-    output.writeFieldBegin('req', Thrift.Type.STRUCT, 1);
-    this.req.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-TCLIService_GetLog_result = function(args) {
-  this.success = null;
-  if (args) {
-    if (args.success !== undefined) {
-      this.success = args.success;
-    }
-  }
-};
-TCLIService_GetLog_result.prototype = {};
-TCLIService_GetLog_result.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.success = new ttypes.TGetLogResp();
-        this.success.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-TCLIService_GetLog_result.prototype.write = function(output) {
-  output.writeStructBegin('TCLIService_GetLog_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
     this.success.write(output);
@@ -2983,6 +2983,53 @@ TCLIServiceClient.prototype.recv_FetchResults = function(input,mtype,rseqid) {
   }
   return callback('FetchResults failed: unknown result');
 };
+TCLIServiceClient.prototype.FetchQueryLogs = function(req, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_FetchQueryLogs(req);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_FetchQueryLogs(req);
+  }
+};
+
+TCLIServiceClient.prototype.send_FetchQueryLogs = function(req) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('FetchQueryLogs', Thrift.MessageType.CALL, this.seqid());
+  var args = new TCLIService_FetchQueryLogs_args();
+  args.req = req;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+TCLIServiceClient.prototype.recv_FetchQueryLogs = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new TCLIService_FetchQueryLogs_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('FetchQueryLogs failed: unknown result');
+};
 TCLIServiceClient.prototype.GetFunctions = function(req, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
@@ -3029,53 +3076,6 @@ TCLIServiceClient.prototype.recv_GetFunctions = function(input,mtype,rseqid) {
     return callback(null, result.success);
   }
   return callback('GetFunctions failed: unknown result');
-};
-TCLIServiceClient.prototype.GetLog = function(req, callback) {
-  this._seqid = this.new_seqid();
-  if (callback === undefined) {
-    var _defer = Q.defer();
-    this._reqs[this.seqid()] = function(error, result) {
-      if (error) {
-        _defer.reject(error);
-      } else {
-        _defer.resolve(result);
-      }
-    };
-    this.send_GetLog(req);
-    return _defer.promise;
-  } else {
-    this._reqs[this.seqid()] = callback;
-    this.send_GetLog(req);
-  }
-};
-
-TCLIServiceClient.prototype.send_GetLog = function(req) {
-  var output = new this.pClass(this.output);
-  output.writeMessageBegin('GetLog', Thrift.MessageType.CALL, this.seqid());
-  var args = new TCLIService_GetLog_args();
-  args.req = req;
-  args.write(output);
-  output.writeMessageEnd();
-  return this.output.flush();
-};
-
-TCLIServiceClient.prototype.recv_GetLog = function(input,mtype,rseqid) {
-  var callback = this._reqs[rseqid] || function() {};
-  delete this._reqs[rseqid];
-  if (mtype == Thrift.MessageType.EXCEPTION) {
-    var x = new Thrift.TApplicationException();
-    x.read(input);
-    input.readMessageEnd();
-    return callback(x);
-  }
-  var result = new TCLIService_GetLog_result();
-  result.read(input);
-  input.readMessageEnd();
-
-  if (null !== result.success) {
-    return callback(null, result.success);
-  }
-  return callback('GetLog failed: unknown result');
 };
 TCLIServiceClient.prototype.Commit = function(req, callback) {
   this._seqid = this.new_seqid();
@@ -3652,6 +3652,36 @@ TCLIServiceProcessor.prototype.process_FetchResults = function(seqid, input, out
   }
 }
 
+TCLIServiceProcessor.prototype.process_FetchQueryLogs = function(seqid, input, output) {
+  var args = new TCLIService_FetchQueryLogs_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.FetchQueryLogs.length === 1) {
+    Q.fcall(this._handler.FetchQueryLogs, args.req)
+      .then(function(result) {
+        var result = new TCLIService_FetchQueryLogs_result({success: result});
+        output.writeMessageBegin("FetchQueryLogs", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result = new TCLIService_FetchQueryLogs_result(err);
+        output.writeMessageBegin("FetchQueryLogs", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.FetchQueryLogs(args.req,  function (err, result) {
+      var result = new TCLIService_FetchQueryLogs_result((err != null ? err : {success: result}));
+      output.writeMessageBegin("FetchQueryLogs", Thrift.MessageType.REPLY, seqid);
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
 TCLIServiceProcessor.prototype.process_GetFunctions = function(seqid, input, output) {
   var args = new TCLIService_GetFunctions_args();
   args.read(input);
@@ -3675,36 +3705,6 @@ TCLIServiceProcessor.prototype.process_GetFunctions = function(seqid, input, out
     this._handler.GetFunctions(args.req,  function (err, result) {
       var result = new TCLIService_GetFunctions_result((err != null ? err : {success: result}));
       output.writeMessageBegin("GetFunctions", Thrift.MessageType.REPLY, seqid);
-      result.write(output);
-      output.writeMessageEnd();
-      output.flush();
-    });
-  }
-}
-
-TCLIServiceProcessor.prototype.process_GetLog = function(seqid, input, output) {
-  var args = new TCLIService_GetLog_args();
-  args.read(input);
-  input.readMessageEnd();
-  if (this._handler.GetLog.length === 1) {
-    Q.fcall(this._handler.GetLog, args.req)
-      .then(function(result) {
-        var result = new TCLIService_GetLog_result({success: result});
-        output.writeMessageBegin("GetLog", Thrift.MessageType.REPLY, seqid);
-        result.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      }, function (err) {
-        var result = new TCLIService_GetLog_result(err);
-        output.writeMessageBegin("GetLog", Thrift.MessageType.REPLY, seqid);
-        result.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      });
-  } else {
-    this._handler.GetLog(args.req,  function (err, result) {
-      var result = new TCLIService_GetLog_result((err != null ? err : {success: result}));
-      output.writeMessageBegin("GetLog", Thrift.MessageType.REPLY, seqid);
       result.write(output);
       output.writeMessageEnd();
       output.flush();

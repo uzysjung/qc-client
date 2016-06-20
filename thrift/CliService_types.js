@@ -27,6 +27,12 @@ ttypes.TStatusCode = {
   'ERROR_STATUS' : 3,
   'INVALID_HANDLE_STATUS' : 4
 };
+ttypes.TSqlEngine = {
+  'IMPALA' : 0,
+  'HIVE' : 1,
+  'PHOENIX' : 2,
+  'PRESTO' : 3
+};
 ttypes.TOperationState = {
   'INITIALIZED_STATE' : 0,
   'RUNNING_STATE' : 1,
@@ -538,7 +544,8 @@ TOpenSessionReq = module.exports.TOpenSessionReq = function(args) {
   this.url = null;
   this.username = null;
   this.password = null;
-  this.configuration = null;
+  this.configurationMap = null;
+  this.variablesMap = null;
   this.hostInfo = null;
   this.clientVersion = null;
   if (args) {
@@ -558,8 +565,11 @@ TOpenSessionReq = module.exports.TOpenSessionReq = function(args) {
     if (args.password !== undefined) {
       this.password = args.password;
     }
-    if (args.configuration !== undefined) {
-      this.configuration = args.configuration;
+    if (args.configurationMap !== undefined) {
+      this.configurationMap = args.configurationMap;
+    }
+    if (args.variablesMap !== undefined) {
+      this.variablesMap = args.variablesMap;
     }
     if (args.hostInfo !== undefined) {
       this.hostInfo = args.hostInfo;
@@ -615,7 +625,7 @@ TOpenSessionReq.prototype.read = function(input) {
       if (ftype == Thrift.Type.MAP) {
         var _size8 = 0;
         var _rtmp312;
-        this.configuration = {};
+        this.configurationMap = {};
         var _ktype9 = 0;
         var _vtype10 = 0;
         _rtmp312 = input.readMapBegin();
@@ -628,7 +638,31 @@ TOpenSessionReq.prototype.read = function(input) {
           var val15 = null;
           key14 = input.readString();
           val15 = input.readString();
-          this.configuration[key14] = val15;
+          this.configurationMap[key14] = val15;
+        }
+        input.readMapEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.MAP) {
+        var _size16 = 0;
+        var _rtmp320;
+        this.variablesMap = {};
+        var _ktype17 = 0;
+        var _vtype18 = 0;
+        _rtmp320 = input.readMapBegin();
+        _ktype17 = _rtmp320.ktype;
+        _vtype18 = _rtmp320.vtype;
+        _size16 = _rtmp320.size;
+        for (var _i21 = 0; _i21 < _size16; ++_i21)
+        {
+          var key22 = null;
+          var val23 = null;
+          key22 = input.readString();
+          val23 = input.readString();
+          this.variablesMap[key22] = val23;
         }
         input.readMapEnd();
       } else {
@@ -681,16 +715,31 @@ TOpenSessionReq.prototype.write = function(output) {
     output.writeString(this.password);
     output.writeFieldEnd();
   }
-  if (this.configuration !== null && this.configuration !== undefined) {
-    output.writeFieldBegin('configuration', Thrift.Type.MAP, 5);
-    output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.configuration));
-    for (var kiter16 in this.configuration)
+  if (this.configurationMap !== null && this.configurationMap !== undefined) {
+    output.writeFieldBegin('configurationMap', Thrift.Type.MAP, 5);
+    output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.configurationMap));
+    for (var kiter24 in this.configurationMap)
     {
-      if (this.configuration.hasOwnProperty(kiter16))
+      if (this.configurationMap.hasOwnProperty(kiter24))
       {
-        var viter17 = this.configuration[kiter16];
-        output.writeString(kiter16);
-        output.writeString(viter17);
+        var viter25 = this.configurationMap[kiter24];
+        output.writeString(kiter24);
+        output.writeString(viter25);
+      }
+    }
+    output.writeMapEnd();
+    output.writeFieldEnd();
+  }
+  if (this.variablesMap !== null && this.variablesMap !== undefined) {
+    output.writeFieldBegin('variablesMap', Thrift.Type.MAP, 8);
+    output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.variablesMap));
+    for (var kiter26 in this.variablesMap)
+    {
+      if (this.variablesMap.hasOwnProperty(kiter26))
+      {
+        var viter27 = this.variablesMap[kiter26];
+        output.writeString(kiter26);
+        output.writeString(viter27);
       }
     }
     output.writeMapEnd();
@@ -717,6 +766,7 @@ TOpenSessionResp = module.exports.TOpenSessionResp = function(args) {
   this.sessionHandle = null;
   this.hostInfo = null;
   this.configuration = null;
+  this.sqlEngine = null;
   if (args) {
     if (args.status !== undefined) {
       this.status = args.status;
@@ -738,6 +788,9 @@ TOpenSessionResp = module.exports.TOpenSessionResp = function(args) {
     }
     if (args.configuration !== undefined) {
       this.configuration = args.configuration;
+    }
+    if (args.sqlEngine !== undefined) {
+      this.sqlEngine = args.sqlEngine;
     }
   }
 };
@@ -788,24 +841,31 @@ TOpenSessionResp.prototype.read = function(input) {
       break;
       case 5:
       if (ftype == Thrift.Type.MAP) {
-        var _size18 = 0;
-        var _rtmp322;
+        var _size28 = 0;
+        var _rtmp332;
         this.configuration = {};
-        var _ktype19 = 0;
-        var _vtype20 = 0;
-        _rtmp322 = input.readMapBegin();
-        _ktype19 = _rtmp322.ktype;
-        _vtype20 = _rtmp322.vtype;
-        _size18 = _rtmp322.size;
-        for (var _i23 = 0; _i23 < _size18; ++_i23)
+        var _ktype29 = 0;
+        var _vtype30 = 0;
+        _rtmp332 = input.readMapBegin();
+        _ktype29 = _rtmp332.ktype;
+        _vtype30 = _rtmp332.vtype;
+        _size28 = _rtmp332.size;
+        for (var _i33 = 0; _i33 < _size28; ++_i33)
         {
-          var key24 = null;
-          var val25 = null;
-          key24 = input.readString();
-          val25 = input.readString();
-          this.configuration[key24] = val25;
+          var key34 = null;
+          var val35 = null;
+          key34 = input.readString();
+          val35 = input.readString();
+          this.configuration[key34] = val35;
         }
         input.readMapEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I32) {
+        this.sqlEngine = input.readI32();
       } else {
         input.skip(ftype);
       }
@@ -844,16 +904,21 @@ TOpenSessionResp.prototype.write = function(output) {
   if (this.configuration !== null && this.configuration !== undefined) {
     output.writeFieldBegin('configuration', Thrift.Type.MAP, 5);
     output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.configuration));
-    for (var kiter26 in this.configuration)
+    for (var kiter36 in this.configuration)
     {
-      if (this.configuration.hasOwnProperty(kiter26))
+      if (this.configuration.hasOwnProperty(kiter36))
       {
-        var viter27 = this.configuration[kiter26];
-        output.writeString(kiter26);
-        output.writeString(viter27);
+        var viter37 = this.configuration[kiter36];
+        output.writeString(kiter36);
+        output.writeString(viter37);
       }
     }
     output.writeMapEnd();
+    output.writeFieldEnd();
+  }
+  if (this.sqlEngine !== null && this.sqlEngine !== undefined) {
+    output.writeFieldBegin('sqlEngine', Thrift.Type.I32, 6);
+    output.writeI32(this.sqlEngine);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -1555,22 +1620,22 @@ TExecuteStatementReq.prototype.read = function(input) {
       break;
       case 3:
       if (ftype == Thrift.Type.MAP) {
-        var _size28 = 0;
-        var _rtmp332;
+        var _size38 = 0;
+        var _rtmp342;
         this.configuration = {};
-        var _ktype29 = 0;
-        var _vtype30 = 0;
-        _rtmp332 = input.readMapBegin();
-        _ktype29 = _rtmp332.ktype;
-        _vtype30 = _rtmp332.vtype;
-        _size28 = _rtmp332.size;
-        for (var _i33 = 0; _i33 < _size28; ++_i33)
+        var _ktype39 = 0;
+        var _vtype40 = 0;
+        _rtmp342 = input.readMapBegin();
+        _ktype39 = _rtmp342.ktype;
+        _vtype40 = _rtmp342.vtype;
+        _size38 = _rtmp342.size;
+        for (var _i43 = 0; _i43 < _size38; ++_i43)
         {
-          var key34 = null;
-          var val35 = null;
-          key34 = input.readString();
-          val35 = input.readString();
-          this.configuration[key34] = val35;
+          var key44 = null;
+          var val45 = null;
+          key44 = input.readString();
+          val45 = input.readString();
+          this.configuration[key44] = val45;
         }
         input.readMapEnd();
       } else {
@@ -1608,13 +1673,13 @@ TExecuteStatementReq.prototype.write = function(output) {
   if (this.configuration !== null && this.configuration !== undefined) {
     output.writeFieldBegin('configuration', Thrift.Type.MAP, 3);
     output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.configuration));
-    for (var kiter36 in this.configuration)
+    for (var kiter46 in this.configuration)
     {
-      if (this.configuration.hasOwnProperty(kiter36))
+      if (this.configuration.hasOwnProperty(kiter46))
       {
-        var viter37 = this.configuration[kiter36];
-        output.writeString(kiter36);
-        output.writeString(viter37);
+        var viter47 = this.configuration[kiter46];
+        output.writeString(kiter46);
+        output.writeString(viter47);
       }
     }
     output.writeMapEnd();
@@ -1633,6 +1698,8 @@ TExecuteStatementReq.prototype.write = function(output) {
 TExecuteStatementResp = module.exports.TExecuteStatementResp = function(args) {
   this.status = null;
   this.operationHandle = null;
+  this.asyncMode = null;
+  this.operationState = null;
   if (args) {
     if (args.status !== undefined) {
       this.status = args.status;
@@ -1641,6 +1708,12 @@ TExecuteStatementResp = module.exports.TExecuteStatementResp = function(args) {
     }
     if (args.operationHandle !== undefined) {
       this.operationHandle = args.operationHandle;
+    }
+    if (args.asyncMode !== undefined) {
+      this.asyncMode = args.asyncMode;
+    }
+    if (args.operationState !== undefined) {
+      this.operationState = args.operationState;
     }
   }
 };
@@ -1674,6 +1747,20 @@ TExecuteStatementResp.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 3:
+      if (ftype == Thrift.Type.BOOL) {
+        this.asyncMode = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.operationState = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1693,6 +1780,16 @@ TExecuteStatementResp.prototype.write = function(output) {
   if (this.operationHandle !== null && this.operationHandle !== undefined) {
     output.writeFieldBegin('operationHandle', Thrift.Type.STRUCT, 2);
     this.operationHandle.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.asyncMode !== null && this.asyncMode !== undefined) {
+    output.writeFieldBegin('asyncMode', Thrift.Type.BOOL, 3);
+    output.writeBool(this.asyncMode);
+    output.writeFieldEnd();
+  }
+  if (this.operationState !== null && this.operationState !== undefined) {
+    output.writeFieldBegin('operationState', Thrift.Type.I32, 4);
+    output.writeI32(this.operationState);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -2178,18 +2275,18 @@ TGetTablesReq.prototype.read = function(input) {
       break;
       case 5:
       if (ftype == Thrift.Type.LIST) {
-        var _size38 = 0;
-        var _rtmp342;
+        var _size48 = 0;
+        var _rtmp352;
         this.tableTypes = [];
-        var _etype41 = 0;
-        _rtmp342 = input.readListBegin();
-        _etype41 = _rtmp342.etype;
-        _size38 = _rtmp342.size;
-        for (var _i43 = 0; _i43 < _size38; ++_i43)
+        var _etype51 = 0;
+        _rtmp352 = input.readListBegin();
+        _etype51 = _rtmp352.etype;
+        _size48 = _rtmp352.size;
+        for (var _i53 = 0; _i53 < _size48; ++_i53)
         {
-          var elem44 = null;
-          elem44 = input.readString();
-          this.tableTypes.push(elem44);
+          var elem54 = null;
+          elem54 = input.readString();
+          this.tableTypes.push(elem54);
         }
         input.readListEnd();
       } else {
@@ -2230,12 +2327,12 @@ TGetTablesReq.prototype.write = function(output) {
   if (this.tableTypes !== null && this.tableTypes !== undefined) {
     output.writeFieldBegin('tableTypes', Thrift.Type.LIST, 5);
     output.writeListBegin(Thrift.Type.STRING, this.tableTypes.length);
-    for (var iter45 in this.tableTypes)
+    for (var iter55 in this.tableTypes)
     {
-      if (this.tableTypes.hasOwnProperty(iter45))
+      if (this.tableTypes.hasOwnProperty(iter55))
       {
-        iter45 = this.tableTypes[iter45];
-        output.writeString(iter45);
+        iter55 = this.tableTypes[iter55];
+        output.writeString(iter55);
       }
     }
     output.writeListEnd();
@@ -3316,6 +3413,155 @@ TFetchResultsResp.prototype.write = function(output) {
   return;
 };
 
+TFetchQueryLogReq = module.exports.TFetchQueryLogReq = function(args) {
+  this.operationHandle = null;
+  if (args) {
+    if (args.operationHandle !== undefined) {
+      this.operationHandle = args.operationHandle;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field operationHandle is unset!');
+    }
+  }
+};
+TFetchQueryLogReq.prototype = {};
+TFetchQueryLogReq.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.operationHandle = new ttypes.TOperationHandle();
+        this.operationHandle.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TFetchQueryLogReq.prototype.write = function(output) {
+  output.writeStructBegin('TFetchQueryLogReq');
+  if (this.operationHandle !== null && this.operationHandle !== undefined) {
+    output.writeFieldBegin('operationHandle', Thrift.Type.STRUCT, 1);
+    this.operationHandle.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TFetchQueryLogResp = module.exports.TFetchQueryLogResp = function(args) {
+  this.status = null;
+  this.queryLogs = null;
+  if (args) {
+    if (args.status !== undefined) {
+      this.status = args.status;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field status is unset!');
+    }
+    if (args.queryLogs !== undefined) {
+      this.queryLogs = args.queryLogs;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field queryLogs is unset!');
+    }
+  }
+};
+TFetchQueryLogResp.prototype = {};
+TFetchQueryLogResp.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.status = new ttypes.TStatus();
+        this.status.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.LIST) {
+        var _size56 = 0;
+        var _rtmp360;
+        this.queryLogs = [];
+        var _etype59 = 0;
+        _rtmp360 = input.readListBegin();
+        _etype59 = _rtmp360.etype;
+        _size56 = _rtmp360.size;
+        for (var _i61 = 0; _i61 < _size56; ++_i61)
+        {
+          var elem62 = null;
+          elem62 = input.readString();
+          this.queryLogs.push(elem62);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TFetchQueryLogResp.prototype.write = function(output) {
+  output.writeStructBegin('TFetchQueryLogResp');
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.STRUCT, 1);
+    this.status.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.queryLogs !== null && this.queryLogs !== undefined) {
+    output.writeFieldBegin('queryLogs', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRING, this.queryLogs.length);
+    for (var iter63 in this.queryLogs)
+    {
+      if (this.queryLogs.hasOwnProperty(iter63))
+      {
+        iter63 = this.queryLogs[iter63];
+        output.writeString(iter63);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TGetFunctionsReq = module.exports.TGetFunctionsReq = function(args) {
   this.sessionHandle = null;
   this.catalogName = null;
@@ -3489,133 +3735,6 @@ TGetFunctionsResp.prototype.write = function(output) {
   return;
 };
 
-TGetLogReq = module.exports.TGetLogReq = function(args) {
-  this.operationHandle = null;
-  if (args) {
-    if (args.operationHandle !== undefined) {
-      this.operationHandle = args.operationHandle;
-    } else {
-      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field operationHandle is unset!');
-    }
-  }
-};
-TGetLogReq.prototype = {};
-TGetLogReq.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.operationHandle = new ttypes.TOperationHandle();
-        this.operationHandle.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-TGetLogReq.prototype.write = function(output) {
-  output.writeStructBegin('TGetLogReq');
-  if (this.operationHandle !== null && this.operationHandle !== undefined) {
-    output.writeFieldBegin('operationHandle', Thrift.Type.STRUCT, 1);
-    this.operationHandle.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-TGetLogResp = module.exports.TGetLogResp = function(args) {
-  this.status = null;
-  this.log = null;
-  if (args) {
-    if (args.status !== undefined) {
-      this.status = args.status;
-    } else {
-      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field status is unset!');
-    }
-    if (args.log !== undefined) {
-      this.log = args.log;
-    } else {
-      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field log is unset!');
-    }
-  }
-};
-TGetLogResp.prototype = {};
-TGetLogResp.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.status = new ttypes.TStatus();
-        this.status.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.log = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-TGetLogResp.prototype.write = function(output) {
-  output.writeStructBegin('TGetLogResp');
-  if (this.status !== null && this.status !== undefined) {
-    output.writeFieldBegin('status', Thrift.Type.STRUCT, 1);
-    this.status.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.log !== null && this.log !== undefined) {
-    output.writeFieldBegin('log', Thrift.Type.STRING, 2);
-    output.writeString(this.log);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
 TCommitReq = module.exports.TCommitReq = function(args) {
   this.sessionHandle = null;
   if (args) {
@@ -3721,6 +3840,96 @@ TCommitResp.prototype.write = function(output) {
   if (this.status !== null && this.status !== undefined) {
     output.writeFieldBegin('status', Thrift.Type.STRUCT, 1);
     this.status.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TShutdownStatus = module.exports.TShutdownStatus = function(args) {
+  this.bFinished = null;
+  this.log = null;
+  if (args) {
+    if (args.bFinished !== undefined) {
+      this.bFinished = args.bFinished;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field bFinished is unset!');
+    }
+    if (args.log !== undefined) {
+      this.log = args.log;
+    }
+  }
+};
+TShutdownStatus.prototype = {};
+TShutdownStatus.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.BOOL) {
+        this.bFinished = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.LIST) {
+        var _size64 = 0;
+        var _rtmp368;
+        this.log = [];
+        var _etype67 = 0;
+        _rtmp368 = input.readListBegin();
+        _etype67 = _rtmp368.etype;
+        _size64 = _rtmp368.size;
+        for (var _i69 = 0; _i69 < _size64; ++_i69)
+        {
+          var elem70 = null;
+          elem70 = input.readString();
+          this.log.push(elem70);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TShutdownStatus.prototype.write = function(output) {
+  output.writeStructBegin('TShutdownStatus');
+  if (this.bFinished !== null && this.bFinished !== undefined) {
+    output.writeFieldBegin('bFinished', Thrift.Type.BOOL, 1);
+    output.writeBool(this.bFinished);
+    output.writeFieldEnd();
+  }
+  if (this.log !== null && this.log !== undefined) {
+    output.writeFieldBegin('log', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRING, this.log.length);
+    for (var iter71 in this.log)
+    {
+      if (this.log.hasOwnProperty(iter71))
+      {
+        iter71 = this.log[iter71];
+        output.writeString(iter71);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
   output.writeFieldStop();
