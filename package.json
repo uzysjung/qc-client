@@ -1,6 +1,6 @@
 {
   "name": "di-qc-client",
-  "version": "0.21.9",
+  "version": "0.21.10",
   "description": "nodejs client library for QueryCache",
   "main": "index.js",
   "scripts": {

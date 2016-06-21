@@ -14,6 +14,8 @@ qcClient = module.exports = function() {
     this.promisedClient = null;
     this.connectionError = null;
     //this.timeOutOccured = null;
+    this.connErrCB;
+    this.connEndCB;
 };
 
 qcClient.prototype = {};
@@ -77,32 +79,31 @@ qcClient.prototype.open = function*(jdbcUrl, username, password) {
         });
         var cbErr = function(err) {
             //console.log('cbErr',err);
-            connection.removeListener('connect',cbConnect);
-            connection.removeListener('error',cbErr);
+            // connection.removeListener('connect',cbConnect);
+            // connection.removeListener('error',cbErr);
             reject(err);
-        }
+        };
         var cbConnect = function() {
             //console.log('connect ok');
-            connection.removeListener('connect',cbConnect);
-            connection.removeListener('error',cbErr);
-
+            // connection.removeListener('connect',cbConnect);
+            // connection.removeListener('error',cbErr);
             resolve(connection);
-        }
+        };
 
-        connection.on('error', cbErr);
-        connection.on('connect',cbConnect);
+        connection.once('error', cbErr);
+        connection.once('connect',cbConnect);
     });
     this.connection = yield getConnection;
-
-    this.connection.on('error',function(err){
+    this.connErrCB = function(err){
         self.connectionError = err;
-        console.log('qc-client connection error :',self.connectionError.stack);
-        // throw self.connectionError;
-    });
-    this.connection.connection.on('end',function(){
-        self.connectionError = new Error(" FIN from destination");
-        console.log('qc-client connection end :',self.connectionError.stack);
-    });
+        console.log('qc-client connection error :',err.stack);
+    };
+    this.connEndCB = function(){
+        self.connectionError = new Error("FIN from destination");
+        // console.log('qc-client connection end :',self.connectionError.stack);
+    };
+    this.connection.on('error',self.connErrCB);
+    this.connection.connection.on('end',self.connEndCB);
 
 
     hostInfo.ipaddr = this.connection.connection.localAddress;
@@ -122,13 +123,18 @@ qcClient.prototype.open = function*(jdbcUrl, username, password) {
 qcClient.prototype.close = function*() {
     // TODO: close statements.
     if (this.connection != null) {
+        console.log('called close');
+
+        this.connection.removeListener('error',this.connErrCB);
+        this.connection.connection.removeListener('end',this.connEndCB);
         this.connection.end();
         this.connection = null;
         this.client = null;
         this.serverInfo = null;
         this.sessionHandle = null;
         this.connectionError = null;
-        //this.timeOutOccured = null;
+        this.connErrCB = null;
+        this.connEndCB = null;
     }
 };
 
