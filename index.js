@@ -123,7 +123,7 @@ qcClient.prototype.open = function*(jdbcUrl, username, password) {
 qcClient.prototype.close = function*() {
     // TODO: close statements.
     if (this.connection != null) {
-        console.log('called close');
+        // console.log('called close');
 
         this.connection.removeListener('error',this.connErrCB);
         this.connection.connection.removeListener('end',this.connEndCB);
