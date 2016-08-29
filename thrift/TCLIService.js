@@ -2067,6 +2067,222 @@ TCLIService_GetFunctions_result.prototype.write = function(output) {
   return;
 };
 
+TCLIService_SetAutoCommit_args = function(args) {
+  this.req = null;
+  if (args) {
+    if (args.req !== undefined) {
+      this.req = args.req;
+    }
+  }
+};
+TCLIService_SetAutoCommit_args.prototype = {};
+TCLIService_SetAutoCommit_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.req = new ttypes.TSetAutoCommitReq();
+        this.req.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_SetAutoCommit_args.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_SetAutoCommit_args');
+  if (this.req !== null && this.req !== undefined) {
+    output.writeFieldBegin('req', Thrift.Type.STRUCT, 1);
+    this.req.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TCLIService_SetAutoCommit_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+  }
+};
+TCLIService_SetAutoCommit_result.prototype = {};
+TCLIService_SetAutoCommit_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new ttypes.TSetAutoCommitResp();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_SetAutoCommit_result.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_SetAutoCommit_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TCLIService_GetAutoCommit_args = function(args) {
+  this.req = null;
+  if (args) {
+    if (args.req !== undefined) {
+      this.req = args.req;
+    }
+  }
+};
+TCLIService_GetAutoCommit_args.prototype = {};
+TCLIService_GetAutoCommit_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.req = new ttypes.TGetAutoCommitReq();
+        this.req.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_GetAutoCommit_args.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_GetAutoCommit_args');
+  if (this.req !== null && this.req !== undefined) {
+    output.writeFieldBegin('req', Thrift.Type.STRUCT, 1);
+    this.req.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TCLIService_GetAutoCommit_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+  }
+};
+TCLIService_GetAutoCommit_result.prototype = {};
+TCLIService_GetAutoCommit_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new ttypes.TGetAutoCommitResp();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_GetAutoCommit_result.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_GetAutoCommit_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TCLIService_Commit_args = function(args) {
   this.req = null;
   if (args) {
@@ -2165,6 +2381,114 @@ TCLIService_Commit_result.prototype.read = function(input) {
 
 TCLIService_Commit_result.prototype.write = function(output) {
   output.writeStructBegin('TCLIService_Commit_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TCLIService_Rollback_args = function(args) {
+  this.req = null;
+  if (args) {
+    if (args.req !== undefined) {
+      this.req = args.req;
+    }
+  }
+};
+TCLIService_Rollback_args.prototype = {};
+TCLIService_Rollback_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.req = new ttypes.TRollbackReq();
+        this.req.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_Rollback_args.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_Rollback_args');
+  if (this.req !== null && this.req !== undefined) {
+    output.writeFieldBegin('req', Thrift.Type.STRUCT, 1);
+    this.req.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TCLIService_Rollback_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+  }
+};
+TCLIService_Rollback_result.prototype = {};
+TCLIService_Rollback_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new ttypes.TRollbackResp();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_Rollback_result.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_Rollback_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
     this.success.write(output);
@@ -3077,6 +3401,100 @@ TCLIServiceClient.prototype.recv_GetFunctions = function(input,mtype,rseqid) {
   }
   return callback('GetFunctions failed: unknown result');
 };
+TCLIServiceClient.prototype.SetAutoCommit = function(req, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_SetAutoCommit(req);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_SetAutoCommit(req);
+  }
+};
+
+TCLIServiceClient.prototype.send_SetAutoCommit = function(req) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('SetAutoCommit', Thrift.MessageType.CALL, this.seqid());
+  var args = new TCLIService_SetAutoCommit_args();
+  args.req = req;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+TCLIServiceClient.prototype.recv_SetAutoCommit = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new TCLIService_SetAutoCommit_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('SetAutoCommit failed: unknown result');
+};
+TCLIServiceClient.prototype.GetAutoCommit = function(req, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_GetAutoCommit(req);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_GetAutoCommit(req);
+  }
+};
+
+TCLIServiceClient.prototype.send_GetAutoCommit = function(req) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('GetAutoCommit', Thrift.MessageType.CALL, this.seqid());
+  var args = new TCLIService_GetAutoCommit_args();
+  args.req = req;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+TCLIServiceClient.prototype.recv_GetAutoCommit = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new TCLIService_GetAutoCommit_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('GetAutoCommit failed: unknown result');
+};
 TCLIServiceClient.prototype.Commit = function(req, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
@@ -3123,6 +3541,53 @@ TCLIServiceClient.prototype.recv_Commit = function(input,mtype,rseqid) {
     return callback(null, result.success);
   }
   return callback('Commit failed: unknown result');
+};
+TCLIServiceClient.prototype.Rollback = function(req, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_Rollback(req);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_Rollback(req);
+  }
+};
+
+TCLIServiceClient.prototype.send_Rollback = function(req) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('Rollback', Thrift.MessageType.CALL, this.seqid());
+  var args = new TCLIService_Rollback_args();
+  args.req = req;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+TCLIServiceClient.prototype.recv_Rollback = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new TCLIService_Rollback_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('Rollback failed: unknown result');
 };
 TCLIServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
@@ -3712,6 +4177,66 @@ TCLIServiceProcessor.prototype.process_GetFunctions = function(seqid, input, out
   }
 }
 
+TCLIServiceProcessor.prototype.process_SetAutoCommit = function(seqid, input, output) {
+  var args = new TCLIService_SetAutoCommit_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.SetAutoCommit.length === 1) {
+    Q.fcall(this._handler.SetAutoCommit, args.req)
+      .then(function(result) {
+        var result = new TCLIService_SetAutoCommit_result({success: result});
+        output.writeMessageBegin("SetAutoCommit", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result = new TCLIService_SetAutoCommit_result(err);
+        output.writeMessageBegin("SetAutoCommit", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.SetAutoCommit(args.req,  function (err, result) {
+      var result = new TCLIService_SetAutoCommit_result((err != null ? err : {success: result}));
+      output.writeMessageBegin("SetAutoCommit", Thrift.MessageType.REPLY, seqid);
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+TCLIServiceProcessor.prototype.process_GetAutoCommit = function(seqid, input, output) {
+  var args = new TCLIService_GetAutoCommit_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.GetAutoCommit.length === 1) {
+    Q.fcall(this._handler.GetAutoCommit, args.req)
+      .then(function(result) {
+        var result = new TCLIService_GetAutoCommit_result({success: result});
+        output.writeMessageBegin("GetAutoCommit", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result = new TCLIService_GetAutoCommit_result(err);
+        output.writeMessageBegin("GetAutoCommit", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.GetAutoCommit(args.req,  function (err, result) {
+      var result = new TCLIService_GetAutoCommit_result((err != null ? err : {success: result}));
+      output.writeMessageBegin("GetAutoCommit", Thrift.MessageType.REPLY, seqid);
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
 TCLIServiceProcessor.prototype.process_Commit = function(seqid, input, output) {
   var args = new TCLIService_Commit_args();
   args.read(input);
@@ -3735,6 +4260,36 @@ TCLIServiceProcessor.prototype.process_Commit = function(seqid, input, output) {
     this._handler.Commit(args.req,  function (err, result) {
       var result = new TCLIService_Commit_result((err != null ? err : {success: result}));
       output.writeMessageBegin("Commit", Thrift.MessageType.REPLY, seqid);
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+}
+
+TCLIServiceProcessor.prototype.process_Rollback = function(seqid, input, output) {
+  var args = new TCLIService_Rollback_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.Rollback.length === 1) {
+    Q.fcall(this._handler.Rollback, args.req)
+      .then(function(result) {
+        var result = new TCLIService_Rollback_result({success: result});
+        output.writeMessageBegin("Rollback", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result = new TCLIService_Rollback_result(err);
+        output.writeMessageBegin("Rollback", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.Rollback(args.req,  function (err, result) {
+      var result = new TCLIService_Rollback_result((err != null ? err : {success: result}));
+      output.writeMessageBegin("Rollback", Thrift.MessageType.REPLY, seqid);
       result.write(output);
       output.writeMessageEnd();
       output.flush();

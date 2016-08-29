@@ -3735,6 +3735,275 @@ TGetFunctionsResp.prototype.write = function(output) {
   return;
 };
 
+TSetAutoCommitReq = module.exports.TSetAutoCommitReq = function(args) {
+  this.sessionHandle = null;
+  this.autoCommit = null;
+  if (args) {
+    if (args.sessionHandle !== undefined) {
+      this.sessionHandle = args.sessionHandle;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field sessionHandle is unset!');
+    }
+    if (args.autoCommit !== undefined) {
+      this.autoCommit = args.autoCommit;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field autoCommit is unset!');
+    }
+  }
+};
+TSetAutoCommitReq.prototype = {};
+TSetAutoCommitReq.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.sessionHandle = new ttypes.TSessionHandle();
+        this.sessionHandle.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.BOOL) {
+        this.autoCommit = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TSetAutoCommitReq.prototype.write = function(output) {
+  output.writeStructBegin('TSetAutoCommitReq');
+  if (this.sessionHandle !== null && this.sessionHandle !== undefined) {
+    output.writeFieldBegin('sessionHandle', Thrift.Type.STRUCT, 1);
+    this.sessionHandle.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.autoCommit !== null && this.autoCommit !== undefined) {
+    output.writeFieldBegin('autoCommit', Thrift.Type.BOOL, 2);
+    output.writeBool(this.autoCommit);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TSetAutoCommitResp = module.exports.TSetAutoCommitResp = function(args) {
+  this.status = null;
+  this.autoCommit = null;
+  if (args) {
+    if (args.status !== undefined) {
+      this.status = args.status;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field status is unset!');
+    }
+    if (args.autoCommit !== undefined) {
+      this.autoCommit = args.autoCommit;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field autoCommit is unset!');
+    }
+  }
+};
+TSetAutoCommitResp.prototype = {};
+TSetAutoCommitResp.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.status = new ttypes.TStatus();
+        this.status.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.BOOL) {
+        this.autoCommit = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TSetAutoCommitResp.prototype.write = function(output) {
+  output.writeStructBegin('TSetAutoCommitResp');
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.STRUCT, 1);
+    this.status.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.autoCommit !== null && this.autoCommit !== undefined) {
+    output.writeFieldBegin('autoCommit', Thrift.Type.BOOL, 2);
+    output.writeBool(this.autoCommit);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TGetAutoCommitReq = module.exports.TGetAutoCommitReq = function(args) {
+  this.sessionHandle = null;
+  if (args) {
+    if (args.sessionHandle !== undefined) {
+      this.sessionHandle = args.sessionHandle;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field sessionHandle is unset!');
+    }
+  }
+};
+TGetAutoCommitReq.prototype = {};
+TGetAutoCommitReq.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.sessionHandle = new ttypes.TSessionHandle();
+        this.sessionHandle.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TGetAutoCommitReq.prototype.write = function(output) {
+  output.writeStructBegin('TGetAutoCommitReq');
+  if (this.sessionHandle !== null && this.sessionHandle !== undefined) {
+    output.writeFieldBegin('sessionHandle', Thrift.Type.STRUCT, 1);
+    this.sessionHandle.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TGetAutoCommitResp = module.exports.TGetAutoCommitResp = function(args) {
+  this.status = null;
+  this.autoCommit = null;
+  if (args) {
+    if (args.status !== undefined) {
+      this.status = args.status;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field status is unset!');
+    }
+    if (args.autoCommit !== undefined) {
+      this.autoCommit = args.autoCommit;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field autoCommit is unset!');
+    }
+  }
+};
+TGetAutoCommitResp.prototype = {};
+TGetAutoCommitResp.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.status = new ttypes.TStatus();
+        this.status.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.BOOL) {
+        this.autoCommit = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TGetAutoCommitResp.prototype.write = function(output) {
+  output.writeStructBegin('TGetAutoCommitResp');
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.STRUCT, 1);
+    this.status.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.autoCommit !== null && this.autoCommit !== undefined) {
+    output.writeFieldBegin('autoCommit', Thrift.Type.BOOL, 2);
+    output.writeBool(this.autoCommit);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TCommitReq = module.exports.TCommitReq = function(args) {
   this.sessionHandle = null;
   if (args) {
@@ -3837,6 +4106,118 @@ TCommitResp.prototype.read = function(input) {
 
 TCommitResp.prototype.write = function(output) {
   output.writeStructBegin('TCommitResp');
+  if (this.status !== null && this.status !== undefined) {
+    output.writeFieldBegin('status', Thrift.Type.STRUCT, 1);
+    this.status.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TRollbackReq = module.exports.TRollbackReq = function(args) {
+  this.sessionHandle = null;
+  if (args) {
+    if (args.sessionHandle !== undefined) {
+      this.sessionHandle = args.sessionHandle;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field sessionHandle is unset!');
+    }
+  }
+};
+TRollbackReq.prototype = {};
+TRollbackReq.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.sessionHandle = new ttypes.TSessionHandle();
+        this.sessionHandle.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TRollbackReq.prototype.write = function(output) {
+  output.writeStructBegin('TRollbackReq');
+  if (this.sessionHandle !== null && this.sessionHandle !== undefined) {
+    output.writeFieldBegin('sessionHandle', Thrift.Type.STRUCT, 1);
+    this.sessionHandle.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TRollbackResp = module.exports.TRollbackResp = function(args) {
+  this.status = null;
+  if (args) {
+    if (args.status !== undefined) {
+      this.status = args.status;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field status is unset!');
+    }
+  }
+};
+TRollbackResp.prototype = {};
+TRollbackResp.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.status = new ttypes.TStatus();
+        this.status.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TRollbackResp.prototype.write = function(output) {
+  output.writeStructBegin('TRollbackResp');
   if (this.status !== null && this.status !== undefined) {
     output.writeFieldBegin('status', Thrift.Type.STRUCT, 1);
     this.status.write(output);
