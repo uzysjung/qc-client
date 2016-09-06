@@ -15,6 +15,88 @@ var MetaData_ttypes = require('./MetaData_types')
 var ttypes = require('./CliService_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
+TCLIService_GetPublicKey_args = function(args) {
+};
+TCLIService_GetPublicKey_args.prototype = {};
+TCLIService_GetPublicKey_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    input.skip(ftype);
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_GetPublicKey_args.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_GetPublicKey_args');
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TCLIService_GetPublicKey_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+  }
+};
+TCLIService_GetPublicKey_result.prototype = {};
+TCLIService_GetPublicKey_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new ttypes.TGetPublicKeyResp();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCLIService_GetPublicKey_result.prototype.write = function(output) {
+  output.writeStructBegin('TCLIService_GetPublicKey_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TCLIService_OpenSession_args = function(args) {
   this.req = null;
   if (args) {
@@ -2508,6 +2590,52 @@ TCLIServiceClient = exports.Client = function(output, pClass) {
 TCLIServiceClient.prototype = {};
 TCLIServiceClient.prototype.seqid = function() { return this._seqid; }
 TCLIServiceClient.prototype.new_seqid = function() { return this._seqid += 1; }
+TCLIServiceClient.prototype.GetPublicKey = function(callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_GetPublicKey();
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_GetPublicKey();
+  }
+};
+
+TCLIServiceClient.prototype.send_GetPublicKey = function() {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('GetPublicKey', Thrift.MessageType.CALL, this.seqid());
+  var args = new TCLIService_GetPublicKey_args();
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+TCLIServiceClient.prototype.recv_GetPublicKey = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new TCLIService_GetPublicKey_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('GetPublicKey failed: unknown result');
+};
 TCLIServiceClient.prototype.OpenSession = function(req, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
@@ -3604,6 +3732,36 @@ TCLIServiceProcessor.prototype.process = function(input, output) {
     x.write(output);
     output.writeMessageEnd();
     output.flush();
+  }
+}
+
+TCLIServiceProcessor.prototype.process_GetPublicKey = function(seqid, input, output) {
+  var args = new TCLIService_GetPublicKey_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.GetPublicKey.length === 0) {
+    Q.fcall(this._handler.GetPublicKey)
+      .then(function(result) {
+        var result = new TCLIService_GetPublicKey_result({success: result});
+        output.writeMessageBegin("GetPublicKey", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result = new TCLIService_GetPublicKey_result(err);
+        output.writeMessageBegin("GetPublicKey", Thrift.MessageType.REPLY, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.GetPublicKey( function (err, result) {
+      var result = new TCLIService_GetPublicKey_result((err != null ? err : {success: result}));
+      output.writeMessageBegin("GetPublicKey", Thrift.MessageType.REPLY, seqid);
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
   }
 }
 

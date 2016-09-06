@@ -539,6 +539,76 @@ THostInfo.prototype.write = function(output) {
   return;
 };
 
+TGetPublicKeyResp = module.exports.TGetPublicKeyResp = function(args) {
+  this.prefix = null;
+  this.publicKey = null;
+  if (args) {
+    if (args.prefix !== undefined) {
+      this.prefix = args.prefix;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field prefix is unset!');
+    }
+    if (args.publicKey !== undefined) {
+      this.publicKey = args.publicKey;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field publicKey is unset!');
+    }
+  }
+};
+TGetPublicKeyResp.prototype = {};
+TGetPublicKeyResp.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.prefix = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.publicKey = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TGetPublicKeyResp.prototype.write = function(output) {
+  output.writeStructBegin('TGetPublicKeyResp');
+  if (this.prefix !== null && this.prefix !== undefined) {
+    output.writeFieldBegin('prefix', Thrift.Type.STRING, 1);
+    output.writeString(this.prefix);
+    output.writeFieldEnd();
+  }
+  if (this.publicKey !== null && this.publicKey !== undefined) {
+    output.writeFieldBegin('publicKey', Thrift.Type.STRING, 2);
+    output.writeString(this.publicKey);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TOpenSessionReq = module.exports.TOpenSessionReq = function(args) {
   this.clientProtocol = 0;
   this.url = null;
