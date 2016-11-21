@@ -11,7 +11,6 @@ Statement = module.exports = function(client, sessionHandle) {
     this.updateRowCount = -1;
 
     this.resultSet = null;
-    this.queryLogs = [];
 };
 
 Statement.prototype.execute = function*(query) {
@@ -30,10 +29,6 @@ Statement.prototype.execute = function*(query) {
     var osResp;
     do {
         osResp = yield this.client.GetOperationStatus(osReq);
-        var logs = yield this.getQueryLogs();
-        this.queryLogs = this.queryLogs.concat(logs.queryLogs);
-        console.log('queryLogs:::',this.queryLogs)
-
     } while (
             (osResp.operationState == ttypes.TOperationState.INITIALIZED_STATE || osResp.operationState == ttypes.TOperationState.RUNNING_STATE)
             && osResp.status.statusCode == ttypes.TStatusCode.SUCCESS_STATUS
