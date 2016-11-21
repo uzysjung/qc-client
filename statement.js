@@ -44,7 +44,8 @@ Statement.prototype.execute = function*(query) {
     }
 
     throw new QueryCacheException({
-        message: "operation was not successful. state is " + osResp.operationState
+        message: "operation was not successful. state is " + osResp.operationState,
+        infoMessages : 'SQL Query:' + query
     });
 };
 Statement.prototype.excuteStatement = function*(query){
