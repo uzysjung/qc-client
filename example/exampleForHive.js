@@ -1,3 +1,6 @@
+/**
+ * Created by 1002125 on 2016. 11. 21..
+ */
 var qcClient = require('../index');
 var co = require('co');
 
@@ -9,15 +12,22 @@ co( function *() {
     try {
         var startTime = new Date();
         var connected = yield qc.open("jdbc:eda-hive://hostname:port", 'login_name', 'password');
-        //var connected = yield qc.open("jdbc:local-oracle://your-host:8655", "login_name", "password");
         if (!connected) {
             throw new Error("not connected");
         }
         stmt = qc.createStatement();
-        var sql = "select * from your_table where id > 0 limit 10";
+        var sql = "select count(*) from admin.hosts";
         //var sql = "select table_name from tabs";
-        var hasResultSet = yield stmt.execute(sql);
-        if (!hasResultSet) {
+        var executeStatemenResp = yield stmt.excuteStatement(sql);
+
+        var result ;
+        do {
+            result = yield stmt.checkExcuteStatus();
+            console.log('result.logs',result.logs);
+        }
+        while(result && !result.finished);
+
+        if (!result.hasResultSet) {
             console.log("query affected " + stmt.updateRowCount + " rows.");
             return;
         }
@@ -54,7 +64,7 @@ co( function *() {
         console.log("Took " + ((new Date()).getTime() - startTime.getTime()) + "ms");
 
     } catch (e) {
-        console.log("exception!! ", e);
+        console.log("exception!! ", e.stack);
     } finally {
         if (resultSet != null) {
             console.log("closing resultset");

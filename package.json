@@ -1,6 +1,6 @@
 {
   "name": "di-qc-client",
-  "version": "0.23.0",
+  "version": "0.23.1",
   "description": "nodejs client library for QueryCache",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "url": "https://github.com/skpdi/qc-client.git"
   },
   "dependencies": {
-    "thrift": "~0.9.3"
+    "thrift": "~0.9.3",
+    "co" : "~4.6.0"
   }
 }
