@@ -114,6 +114,10 @@ ResultSet.prototype.getObject = function(index) {
         this.lastColumnWasNull = true;
         return null;
     }
+    if ( !column || !column.stringVal ) {
+        this.lastColumnWasNull = true;
+        return null;
+    }
     var value = null;
     switch (columnDesc.type) {
         case 2: // ttypes.TTypeId.BOOLEAN
