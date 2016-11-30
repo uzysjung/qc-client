@@ -110,7 +110,7 @@ ResultSet.prototype.getObject = function(index) {
 
     var columnDesc = this.columns[zIndex];
     var column = this.currentRow.colVals[zIndex];
-    if (column.stringVal != null && column.stringVal.value == null ) {
+    if (column.stringVal && column.stringVal != null && column.stringVal.value == null ) {
         this.lastColumnWasNull = true;
         return null;
     }
