@@ -96,7 +96,7 @@ qcClient.prototype.open = function*(jdbcUrl, username, password) {
     this.connection = yield getConnection;
     this.connErrCB = function(err){
         self.connectionError = err;
-        console.log('qc-client connection error :',err.stack);
+        console.error('qc-client connection error :',err.stack);
     };
     this.connEndCB = function(){
         self.connectionError = new Error("FIN from destination");

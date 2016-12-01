@@ -110,14 +110,11 @@ ResultSet.prototype.getObject = function(index) {
 
     var columnDesc = this.columns[zIndex];
     var column = this.currentRow.colVals[zIndex];
-    if (column && column.stringVal && column.stringVal != null && column.stringVal.value == null ) {
+    if ( column.stringVal != null && column.stringVal.value == null ) {
         this.lastColumnWasNull = true;
         return null;
     }
-    if ( !column || !column.stringVal ) {
-        this.lastColumnWasNull = true;
-        return null;
-    }
+
     var value = null;
     switch (columnDesc.type) {
         case 2: // ttypes.TTypeId.BOOLEAN
