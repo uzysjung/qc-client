@@ -125,6 +125,15 @@ qcClient.prototype.close = function*() {
     if (this.connection != null) {
         // console.log('called close');
 
+        if (this.sessionHandle != null) {
+            var req = new ttypes.TCloseSessionReq({
+                sessionHandle: this.sessionHandle
+            });
+            if(req) {
+                yield this.client.CloseSession(req);
+            }
+        }
+
         this.connection.removeListener('error',this.connErrCB);
         this.connection.connection.removeListener('end',this.connEndCB);
         this.connection.end();
