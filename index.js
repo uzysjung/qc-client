@@ -124,6 +124,8 @@ qcClient.prototype.close = function*() {
     // TODO: close statements.
     if (this.connection != null) {
         // console.log('called close');
+        this.connection.removeListener('error',this.connErrCB);
+        this.connection.connection.removeListener('end',this.connEndCB);
 
         if (this.sessionHandle != null) {
             var req = new ttypes.TCloseSessionReq({
@@ -134,8 +136,6 @@ qcClient.prototype.close = function*() {
             }
         }
 
-        this.connection.removeListener('error',this.connErrCB);
-        this.connection.connection.removeListener('end',this.connEndCB);
         this.connection.end();
         this.connection = null;
         this.client = null;
