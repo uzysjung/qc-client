@@ -36,7 +36,7 @@ ResultSet.prototype.getRowsFromServer = function*() {
     var req = new ttypes.TFetchResultsReq({
         operationHandle: this.operationHandle,
         orientation: ttypes.TFetchOrientation.FETCH_NEXT,
-        maxRows: 1024
+        maxRows: 10
     });
     var resp;
     if(req) {
